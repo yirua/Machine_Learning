@@ -38,16 +38,19 @@ error_val = zeros(length(lambda_vec), 1);
 %       end
 %
 %
+%m = size(X, 1);
 for i = 1:length(lambda_vec)
 	lambda = lambda_vec(i);
+
+
 	theta_x = trainLinearReg(X(1:i, :), y(1:i), lambda);%trainLinearReg(X,y,lambda)
 	[J grad]= linearRegCostFunction(X(1:i, :), y(1:i), theta_x, 0);
 	error_train(i) = J;
 	
-	theta_val = trainLinearReg(Xval(1:i, :), yval(1:i),lambda);
-	[J grad]=linearRegCostFunction(Xval, yval, theta_val, 0);
-	error_val(i) = J;
-%	[error_train(i), error_val(i)]=learningCurve(X, y, Xval, yval, lambda)
+%	theta_val = trainLinearReg(Xval(1:i, :), yval(1:i),lambda);
+	[Jval grad]=linearRegCostFunction(Xval, yval, theta_x, 0);
+	error_val(i) = Jval;
+	
 end
 
 
