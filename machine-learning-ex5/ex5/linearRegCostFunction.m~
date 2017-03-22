@@ -23,8 +23,8 @@ error = h-y;%(m*1)
 error_sqr = error.^2;
 q= sum(error_sqr);
 
-%J = 1/(2*m)*q;
-J = computeCost(X,y, theta);
+J = 1/(2*m)*q;
+%J = computeCost(X,y, theta);
 grad= 1/m*(X'*error);
 %theta = theta - grad;
 %J = computeCost(X,y, theta);% unregulated J 

@@ -49,10 +49,10 @@ pause;
 % Scale features and set them to zero mean
 fprintf('Normalizing Features ...\n');
 
-[X mu sigma] = featureNormalize(X);
+[X_norm mu sigma] = featureNormalize(X);
 
 % Add intercept term to X
-X = [ones(m, 1) X];
+X = [ones(m, 1) X_norm];
 
 
 %% ================ Part 2: Gradient Descent ================
@@ -82,11 +82,11 @@ X = [ones(m, 1) X];
 fprintf('Running gradient descent ...\n');
 
 % Choose some alpha value
-alpha = 0.01;
+alpha = 0.009;
 %alpha = 0.05;
 %alpha = 0.1;
 %alpha = 0.2;
-
+%alpha = 2;
 num_iters = 1400;
 
 % Init Theta and Run Gradient Descent 
@@ -109,17 +109,17 @@ fprintf('\n');
 % Recall that the first column of X is all-ones. Thus, it does
 % not need to be normalized.
 
-features = [-278,48, 1.49, 1061;-160,-44,1.32, 1090;-278,-44,0.35,796;494,48,0.77,92;309,115,3.99,831;195,38,1.57,1093;321,-4,1.26,1046];
+features = [-278,48, 1.49, 1061;-160,-44,1.32, 1090;-278,-44,0.35,796;494,48,0.77,92;309,115,3.99,831;195,38,1.57,1093;321,-4,1.26,1046;-186,-47,2.35,784.93];
 %create a vector of the prediction features, 2016.07.04--07.08, last four is from 2017-02".
-actual_index=[2988;3054.21;3012;3159.17;3196.61;3202.08;3253.43]
+actual_index=[2988;3054.21;3012;3159.17;3196.61;3202.08;3253.43;3212]
 %features_1 = [585,-97,1.27, 263]; % 2016.11.28--12.2
 %features_2 = [321,42,1.37, 1343]; % 2016.5.3--5.6
 % features = [-278,48, 1.49, 1061] ;% 2016-7.04--08
 %features_1 = [-160,-44,1.32, 1090]; % 2016.7.11--7.15
 %features_2 = [-278,-44,0.35,796]; % 2016.7.18--7.22
 data_num = size(features,1);
-features = features-mu
-features = features ./sigma
+features = features-mu;
+features = features ./sigma;
 %for i=1:data_num,
 % features(i, :) = features(i, :)-mu %subtract 'mu',
 % features(i, :) = features(i, :) ./ sigma %then divide element-wise by 'sigma'. mu and sigma were returned by featureNormalize().
@@ -194,7 +194,7 @@ fprintf('\n');
 % Estimate the shanghai index with data from sipf.com
 % ====================== YOUR CODE HERE ======================
 %features= [27,11,2.32,1166];%create a vector of the prediction features, such as "[1650 3]".
-features = [-278,48, 1.49, 1061;-160,-44,1.32, 1090;-278,-44,0.35,796;494,48,0.77,92;309,115,3.99,831;195,38,1.57,1093;321,-4,1.26,1046];
+features = [-278,48, 1.49, 1061;-160,-44,1.32, 1090;-278,-44,0.35,796;494,48,0.77,92;309,115,3.99,831;195,38,1.57,1093;321,-4,1.26,1046;-186,-47,2.35,784.93];
 
 %features_1 = [585,-97,1.27, 1343]; % 2016.11.28--12.2
 %features_2 = [321,42,1.37, 685]; % 2016.5.3--5.6

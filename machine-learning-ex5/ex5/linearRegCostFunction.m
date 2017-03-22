@@ -47,6 +47,6 @@ J = J+reg;
 
 % =========================================================================
 
-grad = grad(:);
+grad = grad(:);% make sure that it is a column vector
 
 end
