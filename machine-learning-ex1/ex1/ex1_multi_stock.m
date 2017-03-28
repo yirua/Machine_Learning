@@ -109,9 +109,10 @@ fprintf('\n');
 % Recall that the first column of X is all-ones. Thus, it does
 % not need to be normalized.
 
-features = [-278,48, 1.49, 1061;-160,-44,1.32, 1090;-278,-44,0.35,796;494,48,0.77,92;309,115,3.99,831;195,38,1.57,1093;321,-4,1.26,1046;-186,-47,2.35,784.93];
+features = [-278,48, 1.49, 1061;-160,-44,1.32, 1090;-278,-44,0.35,796;494,48,0.77,92;309,115,3.99,831;195,38,1.57,1093;321,-4,1.26,1046;-186,-47,2.35,784.93;
+463,-22,0.9,844.7];
 %create a vector of the prediction features, 2016.07.04--07.08, last four is from 2017-02".
-actual_index=[2988;3054.21;3012;3159.17;3196.61;3202.08;3253.43;3212]
+actual_index=[2988;3054.21;3012;3159.17;3196.61;3202.08;3253.43;3212;3237.45]
 %features_1 = [585,-97,1.27, 263]; % 2016.11.28--12.2
 %features_2 = [321,42,1.37, 1343]; % 2016.5.3--5.6
 % features = [-278,48, 1.49, 1061] ;% 2016-7.04--08
@@ -132,10 +133,11 @@ features = [ones(rows(features), 1) features];
 %features_1= [ones(rows(features_1),1) features_1];
 %multiply by theta
 price = zeros(rows(features),1);
-for i=1:data_num,
-	price(i) = features(i, :)*theta;
-	%price(i) = sum(features(i, :)); 
-end;
+%for i=1:data_num,
+%	price(i) = features(i, :)*theta;
+	%price = sum(features(i, :)); 
+%end;
+price = features * theta;  
 %%%%%%%%%%%%%%%%%%%%5
 
 
@@ -146,16 +148,13 @@ end;
 % ============================================================
 fprintf('comparison with gradient descent prediction.\n');
 for j=1:length(price),
-fprintf(['Actual shanghai index by volumn 2016.7.08--2017.2' ...
+fprintf(['Actual shanghai index by volumn 2016.7.08--2017.3' ...
          '(using gradient descent):\n $%f\n'], actual_index(j, :));
-fprintf(['Predicted shanghai index by volumn 2016.11.14--11.18' ...
+fprintf(['Predicted shanghai index by volumn 2016.11.14--2017.3' ...
          '(using gradient descent):\n $%f\n'], price(j, :));
 
 end;
-%fprintf(['Predicted shanghai index by volumn 2016.11.28--12.2' ...
-%         '(using gradient descent):\n $%f\n'], price_1);
-%fprintf(['Predicted shanghai index by volumn 2016.5.3-5.6 ' ...
-%         '(using gradient descent):\n $%f\n'], price_2);
+
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
@@ -183,6 +182,7 @@ m = length(y);
 X = [ones(m, 1) X];
 
 % Calculate the parameters from the normal equation
+%fprintf('the theta vector after normal equation..\n');
 theta = normalEqn(X, y);
 
 % Display normal equation's result
@@ -193,29 +193,23 @@ fprintf('\n');
 
 % Estimate the shanghai index with data from sipf.com
 % ====================== YOUR CODE HERE ======================
-%features= [27,11,2.32,1166];%create a vector of the prediction features, such as "[1650 3]".
-features = [-278,48, 1.49, 1061;-160,-44,1.32, 1090;-278,-44,0.35,796;494,48,0.77,92;309,115,3.99,831;195,38,1.57,1093;321,-4,1.26,1046;-186,-47,2.35,784.93];
 
-%features_1 = [585,-97,1.27, 1343]; % 2016.11.28--12.2
-%features_2 = [321,42,1.37, 685]; % 2016.5.3--5.6
-%bias= size(features,1);
+features = [-278,48, 1.49, 1061;-160,-44,1.32, 1090;-278,-44,0.35,796;494,48,0.77,92;309,115,3.99,831;195,38,1.57,1093;321,-4,1.26,1046;-186,-47,2.35,784.93;463,-22,0.9,844.7];
+% matrix of input data for predictions
+
 
 %add a bias unit
  features= [ones(rows(features),1) features];
-%features_1= [ones(rows(features_1),1) features_1];
-%features_2= [ones(rows(features_2),1) features_2];
+
 %multiply by theta
 price = zeros(rows(features),1);
-for i=1:rows(features),
-	price(i) =features(i, :) *theta;
-	%price(i)= (features(i,1))
-end;
+%for i=1:rows(features),
+%	price(i) =features(i, :) *theta;
+	price= (features *theta); % m*n x n*1 -> m*1
+%end;
 %features = features*theta;
 %features_1 = features_1*theta;
-%features_2 = features_2*theta;
-%price = sum(features); % You should change this
-%price_1 = sum(features_1); % You should change this
-%price_2 = sum(features_2); % You should change this
+
 % ============================================================
 
 for j=1:length(price),

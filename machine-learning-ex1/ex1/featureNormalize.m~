@@ -39,7 +39,7 @@ end;
 %mu = mean(X_norm);
 %X_norm = X_norm -mu;
 %sigma = std(X_norm);
-%X_norm = X_norm ./sigma
+%X_norm = X_norm ./sigma % X_norm = X_norm /sigma
 
 
 % ============================================================

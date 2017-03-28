@@ -20,7 +20,7 @@ hold on;
 plot(x, y, 'rx', 'MarkerSize', 10);% Plot the data
 plot(x, actual_index, 'ko', 'MarkerFaceColor','y','MarkerSize', 7);
 ylabel('index of Shanghai');% Set the y−axis label
-xlabel('features after regulation');% Set the x−axis label
+xlabel('features after regulation, rx-predicted, ko(yellow)-actual-index');% Set the x−axis label
 
 
 hold off;

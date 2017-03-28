@@ -106,8 +106,9 @@ pause;
 fprintf('\nRunning K-Means clustering on pixels from an image.\n\n');
 
 %  Load an image of a bird
-A = double(imread('bird_small.png'));
-
+%A = double(imread('bird_small.png'));
+% Load an image of Victor
+A = double(imread('2017-01-25-213155.jpg'));
 % If imread does not work for you, you can try instead
 %   load ('bird_small.mat');
 

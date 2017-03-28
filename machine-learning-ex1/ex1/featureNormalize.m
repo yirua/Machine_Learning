@@ -25,21 +25,21 @@ features_num = size(X,2);
 %
 % Hint: You might find the 'mean' and 'std' functions useful.
 %       
-for i=1:features_num,
+%for i=1:features_num,
 %a(1, :)       # row 1, all columns
 %a(:,1) #column one, all rows
-	mu(:,i) = mean(X_norm(:,i));
-	X_norm(:,i)= X_norm(:,i)-mu(:,i);
+%	mu(:,i) = mean(X_norm(:,i));
+%	X_norm(:,i)= X_norm(:,i)-mu(:,i);
 
-	sigma(:,i) = std(X_norm(:,i));
+%	sigma(:,i) = std(X_norm(:,i));
 
-	X_norm(:,i)= X_norm(:,i)/sigma(:,i);
-end;
+%	X_norm(:,i)= X_norm(:,i)/sigma(:,i);
+%end;
 
-%mu = mean(X_norm);
-%X_norm = X_norm -mu;
-%sigma = std(X_norm);
-%X_norm = X_norm ./sigma % X_norm = X_norm /sigma
+mu = mean(X_norm);
+X_norm = X_norm -mu;
+sigma = std(X_norm);
+X_norm = X_norm ./sigma; % ./ to get mxn matrix 
 
 
 % ============================================================

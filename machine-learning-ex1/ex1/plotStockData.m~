@@ -3,8 +3,8 @@ function plotStockData(x, y, actual_index)
 %   PLOTDATA(x,y) plots the data points and gives the figure axes labels of
 %   population and profit.
 
-figure; hold on; % open a new figure window
-
+figure; % open a new figure window
+hold on;
 % ====================== YOUR CODE HERE ======================
 % Instructions: Plot the training data into a figure using the 
 %               "figure" and "plot" commands. Set the axes labels using
@@ -17,13 +17,13 @@ figure; hold on; % open a new figure window
 %       markers larger by using plot(..., 'rx', 'MarkerSize', 10);
 
 
-plot(x, y, 'k+', 'LineWidth', 2, 'MarkerSize',7);% Plot the data
-plot(x,actual_index, 'ko', 'MarkerFaceColor','y','MarkerSize', 7);
+plot(x, y, 'rx', 'MarkerSize', 10);% Plot the data
+plot(x, actual_index, 'ko', 'MarkerFaceColor','y','MarkerSize', 7);
 ylabel('index of Shanghai');% Set the y−axis label
 xlabel('features after regulation');% Set the x−axis label
 
-hold off;
 
+hold off;
 
 
 % ============================================================
