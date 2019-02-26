@@ -35,6 +35,7 @@ fprintf('Loading data ...\n');
 
 %% Load Data
 choice =0; % 0 means with the VolDol, 1 means NoVolDol
+%choice =1;
 if (choice==0),
   data = load('shanghai_index_000938_training.csv');
   X = data(:, (2:7));
