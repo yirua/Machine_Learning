@@ -34,15 +34,25 @@ clear ; close all; clc
 fprintf('Loading data ...\n');
 
 %% Load Data
-data = load('shanghai_index_000938_training.csv');
-X = data(:, (2:7));
-y = data(:, 9);
+choice =0; % 0 means with the VolDol, 1 means NoVolDol
+if (choice==0),
+  data = load('shanghai_index_000938_training.csv');
+  X = data(:, (2:7));
+  y = data(:, 9);
+else  
+  data = load('shanghai_index_000938_training_NoVolDol.csv');
+  X = data(:, (2:6));
+  y = data(:, 8);
+end;
 m = length(y);
 
 % Print out some data points
 fprintf('First 10 examples from the dataset: \n');
-fprintf(' x = [%.2f %.2f %.2f %.2f %.2f %.2f], y = %.2f \n', [X(1:10,:) y(1:10,:)]');
-
+if(choice==0),
+  fprintf(' x = [ %.2f %.2f %.2f %.2f %.2f %.2f], y = %.2f \n', [X(1:10,:) y(1:10,:)]');
+else
+  fprintf(' x = [ %.2f %.2f %.2f %.2f %.2f], y = %.2f \n', [X(1:10,:) y(1:10,:)]');
+end;  
 fprintf('Program paused. Press enter to continue.\n');
 pause;
 
@@ -53,9 +63,12 @@ fprintf('Normalizing Features ...\n');
 
 % Add intercept term to X
 X = [ones(m, 1) X_norm];
-fprintf('First 10 examples from the dataset: \n');
-fprintf(' x = [%.2f %.2f %.2f %.2f %.2f %.2f %.2f], y = %.2f \n', [X(1:10,:) y(1:10,:)]');
-
+fprintf('First 10 examples from the dataset after normalization: \n');
+if(choice==0),
+  fprintf(' x = [%.2f %.2f %.2f %.2f %.2f %.2f %.2f], y = %.2f \n', [X(1:10,:) y(1:10,:)]');
+else %NoVolDol, the volumns are missing one
+  fprintf(' x = [ %.2f %.2f %.2f %.2f %.2f %.2f], y = %.2f \n', [X(1:10,:) y(1:10,:)]');
+end;
 %% ================ Part 2: Gradient Descent ================
 
 % ====================== YOUR CODE HERE ======================
@@ -91,14 +104,17 @@ alpha = 0.009;
 num_iters = 400;
 
 % Init Theta and Run Gradient Descent 
-theta = zeros(7, 1);
+if (choice==0),
+  theta = zeros(7, 1);
+else
+  theta = zeros(6,1);
+end;
 [theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters);
 
 % Plot the convergence graph
 figure;
 plot(1:numel(J_history), J_history, '-b', 'LineWidth', 2);
-xlabel('Number of iterations');
-ylabel('Cost J');
+
 
 % Display gradient descent's result
 fprintf('Theta computed from gradient descent: \n');
@@ -109,21 +125,26 @@ fprintf('\n');
 % ====================== YOUR CODE HERE ======================
 % Recall that the first column of X is all-ones. Thus, it does
 % not need to be normalized.
-testing_data = load('shanghai_index_000938_testing.csv');
-features =testing_data(:, 2:7);
+if (choice==0),
+  testing_data = load('shanghai_index_000938_testing.csv');
+  features =testing_data(:, 2:7);
+  actual_index= testing_data(:, 9);
+else
+  testing_data = load('shanghai_index_000938_testing_NoVolDol.csv');
+  features =testing_data(:, 2:6);
+  actual_index= testing_data(:, 8);
+end;
 
-%features = [-278,48, 1.49, 1061;-160,-44,1.32, 1090;-278,-44,0.35,796;494,48,0.77,92;309,115,3.99,831;195,38,1.57,1093;321,-4,1.26,1046;-186,-47,2.35,784.93;
-% 463,-22,0.9,844.7;150,-80,-2.08,935.81];
-%create a vector of the prediction features, 2016.07.04--07.08, last four is from 2017-02".
-%actual_index=[2988;3054.21;3012;3159.17;3196.61;3202.08;3253.43;3212;3237.45;3269]
-actual_index= testing_data(:, 9);
 
 data_num = size(features,1);
 features = features-mu;
 features = features ./sigma;
 fprintf('First 10 features without bias from the dataset: \n');
-fprintf(' features = [%.2f %.2f %.2f %.2f %.2f %.2f] \n', [features(1:10,:) ]);
-
+if (choice==0),
+fprintf(' features = [%.2f %.2f %.2f %.2f %.2f %.2f ] \n', [features(1:10,:) ]);
+else
+fprintf(' features = [%.2f %.2f %.2f %.2f %.2f] \n', [features(1:10,:) ]);
+end;
 %for i=1:data_num,
 % features(i, :) = features(i, :)-mu %subtract 'mu',
 % features(i, :) = features(i, :) ./ sigma %then divide element-wise by 'sigma'. mu and sigma were returned by featureNormalize().
@@ -136,8 +157,11 @@ features_bias = [ones(data_num,1), features];
 % X = [ones(m, 1) X_norm];
 %features(:,1) = ones(size(features,1));
 fprintf('First 10 features with bias from the dataset: \n');
+if (choice==0),
 fprintf(' features = [%.2f %.2f %.2f %.2f %.2f %.2f %.2f] \n', [features_bias(1:10,:)] );
-
+else
+  fprintf(' features = [%.2f %.2f %.2f %.2f %.2f %.2f ] \n', [features(1:10,:) ]);
+ end;
 %X = [ones(m, 1) X];
 %b = [ones(size(b, 1), 1) b];
 %features_1= [ones(rows(features_1),1) features_1];
@@ -185,9 +209,15 @@ fprintf('Solving with normal equations...\n');
 %
 
 %% Load Data
-data = load('shanghai_index_000938_training.csv');
-X = data(:, 2:7);
-y = data(:, 9);
+if (choice==0),
+  data = load('shanghai_index_000938_training.csv');
+  X = data(:, 2:7);
+  y = data(:, 9);
+else
+  data = load('shanghai_index_000938_training_NoVolDol.csv');
+  X = data(:, 2:6);
+  y = data(:, 8);
+end;  
 m = length(y);
 
 % Add intercept term to X
@@ -205,10 +235,13 @@ fprintf('\n');
 
 % Estimate the shanghai index with data from sipf.com
 % ====================== YOUR CODE HERE ======================
-
-%features = [-278,48, 1.49, 1061;-160,-44,1.32, 1090;-278,-44,0.35,796;494,48,0.77,92;309,115,3.99,831;195,38,1.57,1093;321,-4,1.26,1046;-186,-47,2.35,784.93;463,-22,0.9,844.7;150,-80,-2.08,935.81];
-features =testing_data(:, 2:7);
-actual_index= testing_data(:, 9);
+if (choice==0),
+  features =testing_data(:, 2:7);
+  actual_index= testing_data(:, 9);
+else
+  features =testing_data(:, 2:6);
+  actual_index= testing_data(:, 8);
+end,
 m = length(actual_index);
 % matrix of input data for predictions
 
@@ -222,8 +255,7 @@ price = zeros(rows(features_bias),1);
 %	price(i) =features(i, :) *theta;
 	price= (features_bias *theta); % m*n x n*1 -> m*1
 %end;
-%features = features*theta;
-%features_1 = features_1*theta;
+
 
 % ============================================================
 
@@ -232,14 +264,13 @@ fprintf(['Actual 000938 price starting 2019' ...
          '(using normal equation):\n $%f\n'], actual_index(j, :));
 fprintf(['Predicted 000938 price starting 2019 '...
          '(using normal equation):\n $%f\n'], price(j, :));
-fprintf(['%d: Diff of Predicted shanghai index by volumn 2016.11.14--11.18' ...
+fprintf(['%d: Diff of Predicted 000938 in 2019-18' ...
          '(using normal equation) between actual_index:\n $%f\n'],j,actual_index(j, :)-price(j, :));
 end;
-plotStockData(features(:,6), price,actual_index);%plot(x, y, 'rx', 'MarkerSize', 10);% Plot the data
+plotStockData(features_bias(:,6), price,actual_index);%plot(x, y, 'rx', 'MarkerSize', 10);% Plot the data
+xlabel('date');
+ylabel('stock price');
 hold on;
 
-%fprintf(['Predicted price of a 2016.11.28--12.2 ' ...
-%         '(using normal equations):\n $%f\n'], price_1);
-%fprintf(['Predicted price of a 2016.5.3--5.6 ' ...
-%         '(using normal equations):\n $%f\n'], price_2);
+
 
