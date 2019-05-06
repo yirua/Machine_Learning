@@ -38,8 +38,8 @@ choice =0; % 0 means with the VolDol, 1 means NoVolDol
 %choice =1;
 if (choice==0),
   data = load('shanghai_index_000938_training.csv');
-  X = data(:, (2:7));
-  y = data(:, 9);
+  X = data(:, (2:8));
+  y = data(:, 10);
 else  
   data = load('shanghai_index_000938_training_NoVolDol.csv');
   X = data(:, (2:6));
@@ -50,7 +50,7 @@ m = length(y);
 % Print out some data points
 fprintf('First 10 examples from the dataset: \n');
 if(choice==0),
-  fprintf(' x = [ %.2f %.2f %.2f %.2f %.2f %.2f], y = %.2f \n', [X(1:10,:) y(1:10,:)]');
+  fprintf(' x = [ %.2f %.2f %.2f %.2f %.2f %.2f %.2f], y = %.2f \n', [X(1:10,:) y(1:10,:)]');
 else
   fprintf(' x = [ %.2f %.2f %.2f %.2f %.2f], y = %.2f \n', [X(1:10,:) y(1:10,:)]');
 end;  
@@ -66,7 +66,7 @@ fprintf('Normalizing Features ...\n');
 X = [ones(m, 1) X_norm];
 fprintf('First 10 examples from the dataset after normalization: \n');
 if(choice==0),
-  fprintf(' x = [%.2f %.2f %.2f %.2f %.2f %.2f %.2f], y = %.2f \n', [X(1:10,:) y(1:10,:)]');
+  fprintf(' x = [%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f], y = %.2f \n', [X(1:10,:) y(1:10,:)]');
 else %NoVolDol, the volumns are missing one
   fprintf(' x = [ %.2f %.2f %.2f %.2f %.2f %.2f], y = %.2f \n', [X(1:10,:) y(1:10,:)]');
 end;
@@ -97,16 +97,16 @@ end;
 fprintf('Running gradient descent ...\n');
 
 % Choose some alpha value
-alpha = 0.009;
+alpha = 0.005;
 %alpha = 0.05;
 %alpha = 0.1;
 %alpha = 0.2;
 %alpha = 2;
-num_iters = 400;
+num_iters = 1400;
 
 % Init Theta and Run Gradient Descent 
 if (choice==0),
-  theta = zeros(7, 1);
+  theta = zeros(8, 1);
 else
   theta = zeros(6,1);
 end;
@@ -127,11 +127,11 @@ fprintf('\n');
 % Recall that the first column of X is all-ones. Thus, it does
 % not need to be normalized.
 if (choice==0),
-  testing_data = load('shanghai_index_000938_testing.csv');
-  features =testing_data(:, 2:7);
-  actual_index= testing_data(:, 9);
+  testing_data = load('shanghai_index_000938_testing_2019.csv');
+  features =testing_data(:, 2:8);
+  actual_index= testing_data(:, 10);
 else
-  testing_data = load('shanghai_index_000938_testing_NoVolDol.csv');
+  testing_data = load('shanghai_index_000938_testing_2019_NoVolDol.csv');
   features =testing_data(:, 2:6);
   actual_index= testing_data(:, 8);
 end;
@@ -142,7 +142,7 @@ features = features-mu;
 features = features ./sigma;
 fprintf('First 10 features without bias from the dataset: \n');
 if (choice==0),
-fprintf(' features = [%.2f %.2f %.2f %.2f %.2f %.2f ] \n', [features(1:10,:) ]);
+fprintf(' features = [%.2f %.2f %.2f %.2f %.2f %.2f %.2f ] \n', [features(1:10,:) ]);
 else
 fprintf(' features = [%.2f %.2f %.2f %.2f %.2f] \n', [features(1:10,:) ]);
 end;
@@ -159,7 +159,7 @@ features_bias = [ones(data_num,1), features];
 %features(:,1) = ones(size(features,1));
 fprintf('First 10 features with bias from the dataset: \n');
 if (choice==0),
-fprintf(' features = [%.2f %.2f %.2f %.2f %.2f %.2f %.2f] \n', [features_bias(1:10,:)] );
+fprintf(' features = [%.2f %.2f %.2f %.2f %.2f %.2f %.2f %.2f] \n', [features_bias(1:10,:)] );
 else
   fprintf(' features = [%.2f %.2f %.2f %.2f %.2f %.2f ] \n', [features(1:10,:) ]);
  end;
@@ -188,8 +188,8 @@ fprintf(['%d: Actual 000938 price starting 2019' ...
          '(using gradient descent):\n $%f\n'], j,actual_index(j, :));
 fprintf(['Predicted 000938 price starting 2019' ...
          '(using gradient descent):\n $%f\n'], price(j, :));
-fprintf(['Actual 000938 price starting 2019' ...
-         '(using gradient descent) minus Predicted one:\n $%f\n'], actual_index(j, :)-price(j, :));
+fprintf(['Error in Actual 000938 price starting 2019' ...
+         '(using gradient descent) compare with Predicted one:\n $%f\n'], (actual_index(j, :)-price(j, :))/price(j,1));
 end;
 
 fprintf('Program paused. Press enter to continue.\n');
@@ -212,8 +212,8 @@ fprintf('Solving with normal equations...\n');
 %% Load Data
 if (choice==0),
   data = load('shanghai_index_000938_training.csv');
-  X = data(:, 2:7);
-  y = data(:, 9);
+  X = data(:, 2:8);
+  y = data(:, 10);
 else
   data = load('shanghai_index_000938_training_NoVolDol.csv');
   X = data(:, 2:6);
@@ -237,8 +237,8 @@ fprintf('\n');
 % Estimate the shanghai index with data from sipf.com
 % ====================== YOUR CODE HERE ======================
 if (choice==0),
-  features =testing_data(:, 2:7);
-  actual_index= testing_data(:, 9);
+  features =testing_data(:, 2:8);
+  actual_index= testing_data(:, 10);
 else
   features =testing_data(:, 2:6);
   actual_index= testing_data(:, 8);
@@ -266,10 +266,10 @@ fprintf(['Actual 000938 price starting 2019' ...
 fprintf(['Predicted 000938 price starting 2019 '...
          '(using normal equation):\n $%f\n'], price(j, :));
 fprintf(['%d: Diff of Predicted 000938 in 2019-18' ...
-         '(using normal equation) between actual_index:\n $%f\n'],j,actual_index(j, :)-price(j, :));
+         '(using normal equation) between actual_index:\n $%f\n'],j,(actual_index(j, :)-price(j, :))/price(j,:));
 end;
-plotStockData(features_bias(:,6), price,actual_index);%plot(x, y, 'rx', 'MarkerSize', 10);% Plot the data
-xlabel('date');
+plotStockData(features_bias(:,7), price,actual_index);%plot(x, y, 'rx', 'MarkerSize', 10);% Plot the data
+xlabel('number of samples');
 ylabel('stock price');
 hold on;
 
